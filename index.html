@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pusat Bantuan Perangaiii Project - Customer Service siap membantu Anda">
+    <meta name="keywords" content="bantuan, customer service, perangaiii project, konseling, psikotes">
+    <title>Bantuan - Customer Service | Perangaiii Project</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1><a href="../landing page/index.html">Perangaiii Project.</a></h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Layanan</a></li>
+                <li><a href="../psikotes.html">Psikotes</a></li>
+                <li><a href="../blog.html">Blog</a></li>
+                <li><a href="../kerja-sama.html">Kerja Sama</a></li>
+                <li class="dropdown">
+                    <a href="#" class="active">Tentang Kami</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="../kisah-kami.html">Kisah Kami</a></li>
+                        <li><a href="">Bantuan</a></li>
+                        <li><a href="../kontak.html">Kontak</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <a href="../login.html" class="btn-login">Masuk</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="bantuan-container">
+        <!-- Hero Section -->
+        <div class="bantuan-hero">
+            <h1>Pusat Bantuan</h1>
+            <p>Kami siap membantu Anda. Tanyakan apapun kepada tim Customer Service kami!</p>
+        </div>
+
+        <!-- Chat Container -->
+        <div class="chat-wrapper">
+            <div class="chat-container">
+                <!-- Chat Header -->
+                <div class="chat-header">
+                    <div class="cs-info">
+                        <div class="cs-avatar">
+                            <img src="https://ui-avatars.com/api/?name=CS+Team&background=667eea&color=fff&bold=true" alt="CS Avatar">
+                            <span class="status-indicator online"></span>
+                        </div>
+                        <div class="cs-details">
+                            <h3>Customer Service</h3>
+                            <p class="status-text">Online - Siap membantu Anda</p>
+                        </div>
+                    </div>
+                    <button class="minimize-btn" id="minimizeChat" aria-label="Minimize chat">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M19 12H5" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Chat Messages Area -->
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Welcome Message -->
+                    <div class="message-wrapper bot-message">
+                        <div class="message-avatar">
+                            <img src="https://ui-avatars.com/api/?name=CS&background=667eea&color=fff&bold=true" alt="CS">
+                        </div>
+                        <div class="message-content">
+                            <div class="message-bubble">
+                                <p>Halo! Selamat datang di Perangaiii Project 👋</p>
+                                <p>Saya Customer Service yang siap membantu Anda. Ada yang bisa saya bantu hari ini?</p>
+                            </div>
+                            <span class="message-time">Baru saja</span>
+                        </div>
+                    </div>
+
+                    <!-- Quick Replies Suggestions -->
+                    <div class="quick-replies" id="quickReplies">
+                        <p class="quick-replies-label">Pertanyaan yang sering ditanyakan:</p>
+                        <button class="quick-reply-btn" data-message="Bagaimana cara mendaftar?">
+                            📝 Cara Mendaftar
+                        </button>
+                        <button class="quick-reply-btn" data-message="Apa saja layanan yang tersedia?">
+                            🛠️ Info Layanan
+                        </button>
+                        <button class="quick-reply-btn" data-message="Berapa biaya layanan?">
+                            💰 Info Harga
+                        </button>
+                        <button class="quick-reply-btn" data-message="Bagaimana cara menghubungi tim?">
+                            📞 Kontak Kami
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Typing Indicator -->
+                <div class="typing-indicator" id="typingIndicator" style="display: none;">
+                    <div class="typing-avatar">
+                        <img src="https://ui-avatars.com/api/?name=CS&background=667eea&color=fff&bold=true" alt="CS">
+                    </div>
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+
+                <!-- Chat Input Area -->
+                <div class="chat-input-wrapper">
+                    <form id="chatForm" class="chat-input-form">
+                        <input 
+                            type="text" 
+                            id="messageInput" 
+                            class="message-input" 
+                            placeholder="Ketik pesan Anda di sini..."
+                            autocomplete="off"
+                            required
+                        >
+                        <button type="submit" class="send-btn" id="sendBtn" aria-label="Kirim pesan">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M22 2L11 13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </form>
+                    <p class="input-hint">Tekan Enter untuk mengirim pesan</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <h2>Pertanyaan yang Sering Diajukan (FAQ)</h2>
+            <div class="faq-grid">
+                <div class="faq-card">
+                    <h3>🚀 Apa itu Perangaiii Project?</h3>
+                    <p>Perangaiii Project adalah platform yang menyediakan berbagai layanan untuk membantu Anda dalam perjalanan memahami diri, dunia, dan makna hidup.</p>
+                </div>
+                <div class="faq-card">
+                    <h3>⏰ Jam Operasional CS</h3>
+                    <p>Tim Customer Service kami siap membantu Anda setiap hari Senin-Jumat pukul 08.00-17.00 WIB dan Sabtu pukul 09.00-15.00 WIB.</p>
+                </div>
+                <div class="faq-card">
+                    <h3>💬 Cara Menghubungi Kami</h3>
+                    <p>Anda bisa menghubungi kami melalui chat di halaman ini, email, atau WhatsApp yang tercantum di halaman Kontak.</p>
+                </div>
+                <div class="faq-card">
+                    <h3>📦 Layanan yang Tersedia</h3>
+                    <p>Kami menyediakan layanan konseling, psikotes, workshop, dan berbagai program pengembangan diri lainnya.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Perangaiii Project.</h3>
+                <p>Perjalanan pemikiran adalah seni melepaskan beban.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Link Cepat</h4>
+                <ul>
+                    <li><a href="../index.html">Beranda</a></li>
+                    <li><a href="../blog.html">Blog</a></li>
+                    <li><a href="index.html">Bantuan</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Kontak</h4>
+                <p>Email: info@perangaiii.com</p>
+                <p>WhatsApp: +62 851-7413-1038</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Perangaiii Project. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- PENTING: Ganti nama file sesuai dengan JS kamu! -->
+    <script src="chat.js"></script>
+</body>
+</html>
