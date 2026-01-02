@@ -1,0 +1,539 @@
+{
+  "name": "Dewa Almuhyiddin_23121013_STI 5 A",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "perangaiii",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "baf9b8f4-d8b2-4a98-b46d-dbb96df6b8f5",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -752,
+        144
+      ],
+      "webhookId": "788d8bdb-8438-40f3-9186-84f7b4540e5e"
+    },
+    {
+      "parameters": {
+        "content": "Anu Kang njuk tulung ampun usah diutek utek nanti error ngelu maneh aku.. wkwkwkw\n",
+        "height": 80,
+        "width": 416,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -800,
+        512
+      ],
+      "typeVersion": 1,
+      "id": "07368bd8-e1bc-460e-b026-b43531cbf00e",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "groqApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"Kamu classifier. Respon HANYA 1 kata: QUESTION atau REGISTER atau CHAT\\n\\nQUESTION = tanya info (apa, bagaimana, berapa, kapan, dimana, jelaskan, info)\\nREGISTER = mau daftar (daftar, ikut, join, mau daftar, register, gabung, mendaftar)\\nCHAT = lainnya\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"{{ $json.body.message }}\"\n    }\n  ],\n  \"temperature\": 0.1,\n  \"max_tokens\": 10\n}",
+        "options": {}
+      },
+      "id": "3784c461-bcd5-464c-8d75-b89f9db507f2",
+      "name": "Klasifikasi",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -544,
+        144
+      ],
+      "credentials": {
+        "groqApi": {
+          "id": "jleUIPvH5GwHNRNQ",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const ai = $input.item.json.choices[0].message.content.trim().toUpperCase();\nconst msg = $node['Webhook'].json.body.message;\n\nlet intent = \"CHAT\";\nif (ai.includes(\"QUESTION\")) intent = \"QUESTION\";\nelse if (ai.includes(\"REGISTER\")) intent = \"REGISTER\";\n\nreturn { json: { intent, message: msg } };"
+      },
+      "id": "76284747-2f03-4a09-b4e7-da956b748ffe",
+      "name": "Parsing",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -720,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.intent }}",
+              "value2": "=QUESTION"
+            }
+          ]
+        }
+      },
+      "id": "7511f777-1786-4a72-9acd-961e4ada8b54",
+      "name": "IF-Question",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -528,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.intent }}",
+              "value2": "REGISTER"
+            }
+          ]
+        }
+      },
+      "id": "1a97c3f3-7df9-4cf3-a389-5de097ca5125",
+      "name": "IF-Register",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -336,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "app2zk7iy8RUGauRJ",
+          "mode": "list",
+          "cachedResultName": "Perangaiii CS System",
+          "cachedResultUrl": "https://airtable.com/app2zk7iy8RUGauRJ"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbljg5daUgaJ02c9m",
+          "mode": "list",
+          "cachedResultName": "Knowledge_Base",
+          "cachedResultUrl": "https://airtable.com/app2zk7iy8RUGauRJ/tbljg5daUgaJ02c9m"
+        },
+        "filterByFormula": "=FIND(LOWER(\"{{ $node['Parsing'].json.message }}\"), LOWER({Question}))",
+        "options": {}
+      },
+      "id": "fed7e2c6-a8f8-4cd4-a40f-a0c88dacc150",
+      "name": "Knlowledge",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2,
+      "position": [
+        -320,
+        240
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "FUV4DeJHiFA7520y",
+          "name": "Punya Dewa Juga"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "app2zk7iy8RUGauRJ",
+          "mode": "list",
+          "cachedResultName": "Perangaiii CS System",
+          "cachedResultUrl": "https://airtable.com/app2zk7iy8RUGauRJ"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl9jwWm9zxRk8tfx",
+          "mode": "list",
+          "cachedResultName": "NewData",
+          "cachedResultUrl": "https://airtable.com/app2zk7iy8RUGauRJ/tbl9jwWm9zxRk8tfx"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Isi Pesan": "=={{ $node['Parsing'].json.message }}",
+            "Timestamp": "=2025-12-02T00:10:21.847-05:00"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ID Chat",
+              "displayName": "ID Chat",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Isi Pesan",
+              "displayName": "Isi Pesan",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "87a05f83-9f51-4a49-ac19-21f548c3bdde",
+      "name": "NewData",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2,
+      "position": [
+        -128,
+        384
+      ],
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "FUV4DeJHiFA7520y",
+          "name": "Punya Dewa Juga"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "groqApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"Kamu CS Perangaiii Project (platform kesehatan mental & filosofi pragmatis). Jawab dari knowledge base. Jika tidak ada info bilang: 'Maaf kak, hubungi admin WA 0851-7413-1038 ya! 🙏'\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"KB:\\n{{ $json.Answer }}\\n\\nUser: {{ $node['Parsing'].json.message }}\\n\\nJawab ramah 😊\"\n    }\n  ],\n  \"temperature\": 0.7,\n  \"max_tokens\": 400\n}",
+        "options": {}
+      },
+      "id": "053df1b1-757e-4ee3-a354-dc1f1fbddf4d",
+      "name": "Answer",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -128,
+        240
+      ],
+      "credentials": {
+        "groqApi": {
+          "id": "jleUIPvH5GwHNRNQ",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "groqApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"Kamu CS Perangaiii Project. yang mana pasti nanti ditanya beragam pertanyaan seputar psikoloi filsafat kesehatan mental dan lain sebagainya yang tidak ada di sistem knowledge dan Newdata pastikan kamu jawab dengan ramah dan edukatif\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"{{ $node['Parsing'].json.message }}\"\n    }\n  ],\n  \"temperature\": 0.8,\n  \"max_tokens\": 250\n}",
+        "options": {}
+      },
+      "id": "e0567db4-04d1-483e-9af2-ed1323063b43",
+      "name": "Chat",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -128,
+        544
+      ],
+      "credentials": {
+        "groqApi": {
+          "id": "jleUIPvH5GwHNRNQ",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return {\n  json: {\n    response: $input.item.json.choices[0].message.content,\n    type: \"knowledge_answer\"\n  }\n};"
+      },
+      "id": "673c8e8a-c1ab-4d90-a18c-b7aa7146be05",
+      "name": "Format",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const id = $input.item.json.fields ? $input.item.json.fields['ID Chat'] : $now.toFormat('yyyyMMddHHmmss');\nreturn {\n  json: {\n    response: \"✅ Terima kasih! Pendaftaran diterima dengan no: \" + id + \"\\n\\nTim kami akan menghubungi segera. 🙏\\nInfo: WA 0851-7413-1038\",\n    type: \"registration\",\n    reg_id: id\n  }\n};"
+      },
+      "id": "ba84a39a-94fc-4b1e-bd9c-f9eb1e23f5df",
+      "name": "Format1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return {\n  json: {\n    response: $input.item.json.choices[0].message.content,\n    type: \"chat\"\n  }\n};"
+      },
+      "id": "bf6a2c16-b429-49b4-adeb-a8cb16daff36",
+      "name": "Format2",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "mergeByPosition",
+        "options": {}
+      },
+      "id": "1487bbfc-276c-40a8-b14f-917684329111",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        288,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ {\n  \"success\": true,\n  \"message\": $json.response || \"Terima kasih! 😊\",\n  \"type\": $json.type || \"general\",\n  \"reg_id\": $json.reg_id || null,\n  \"timestamp\": $now.toISO()\n} }}",
+        "options": {}
+      },
+      "id": "f5513bca-fd30-4d0b-9bbf-d0299b80f408",
+      "name": "Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        480,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Ini Pake AI Groq pak soalnya gemini versi gratis sepertinya kureng... meskipun sama sama gratis groq juga gratis\n",
+        "height": 96,
+        "width": 416
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -256,
+        112
+      ],
+      "typeVersion": 1,
+      "id": "9b10db4a-da46-4576-8589-c3c94c07d9b9",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Klasifikasi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Klasifikasi": {
+      "main": [
+        [
+          {
+            "node": "Parsing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parsing": {
+      "main": [
+        [
+          {
+            "node": "IF-Question",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF-Question": {
+      "main": [
+        [
+          {
+            "node": "Knlowledge",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IF-Register",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF-Register": {
+      "main": [
+        [
+          {
+            "node": "NewData",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Knlowledge": {
+      "main": [
+        [
+          {
+            "node": "Answer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NewData": {
+      "main": [
+        [
+          {
+            "node": "Format1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Answer": {
+      "main": [
+        [
+          {
+            "node": "Format",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat": {
+      "main": [
+        [
+          {
+            "node": "Format2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Format2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "61c8f8f5-387e-490c-90f6-b0ead8a253f9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d27c23b2918b1655298e933933b62db513579ba86a5ac8592177f2d89182a3fc"
+  },
+  "id": "1uqlsBxCZAsqyFct",
+  "tags": []
+}
